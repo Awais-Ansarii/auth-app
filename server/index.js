@@ -9,7 +9,10 @@ const jwt = require("jsonwebtoken");
 const PORT = process.env.PORT;
 const userRoutes= require('./routes/userRoutes')
 const authRoutes = require("./routes/authRoutes");
+
+
 const app = express()
+
 app.use(express.json())
 app.use(cookie_parser())
 app.use(cors())
@@ -22,7 +25,9 @@ app.use("/api/auth", authRoutes);
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}`);
 })
+
 db_Connection();
+
 app.get('/', (req, res) => {
     res.send(`<h1>Hello</h1>`)
 })

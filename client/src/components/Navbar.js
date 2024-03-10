@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
-const Navbar = () => {
-    const[flag, setflag] = useState(false)
+const Navbar = ({login, setlogin}) => {
+  
   return (
     <nav className="flex  h-12 bg-slate-100 font-semibold p-2 w-screen justify-around items-center">
       <div className="flex gap-6">
@@ -9,10 +9,10 @@ const Navbar = () => {
         <Link to="/about">About</Link>
       </div>
 
-      {flag ? (
+      {login ? (
         <div className="flex gap-6">
           <Link to="/profile">Profile</Link>
-          <Link to="/">Logout</Link>
+          <Link to="/" >Logout</Link>
         </div>
       ) : (
         <div className="flex gap-6">

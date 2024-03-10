@@ -8,11 +8,13 @@ exports.signup = async (req, res) => {
       const { name, email, password } = req.body;
 
       //check if user already exits or not
+      // console.log("req-body")
       const existingUser = await User.findOne({ email });
-
+      // console.log("existingUser");
       // if user exits then
       if (existingUser) {
-        res.status(400).json({
+        // console.log("if existingUser true");
+        return res.status(400).json({
           success: false,
           message: "User already exists with this email",
         });
@@ -24,7 +26,7 @@ exports.signup = async (req, res) => {
       try {
         hashPassword = await bcrypt.hash(password, 10);
       } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
           success: false,
           message: "Error in hashing password",
         });
@@ -111,7 +113,8 @@ exports.login = async (req, res) => {
         message: "wrong password",
       });
     }
-  } catch (error) {
+  }
+  catch (error) {
     res.status(500).json({
       success: false,
       message: "error while login",
