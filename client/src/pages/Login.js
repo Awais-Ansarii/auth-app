@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signInStart, logInSuccess, logInFail } from "../redux/user/userSlice";
 
-const Login = ({ setlogin}) => {
+const Login = () => {
   const [formData, setFormData] = useState({});
-  const [isError, setIsError] = useState(false);
-  const [msg, setmsg] = useState("");
-  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { loginMsg, loading,  loginErr } = useSelector(
+    (state) => state.user
+  );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -16,8 +21,7 @@ const Login = ({ setlogin}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      setIsError(false);
+      dispatch(signInStart());
 
       const res = await fetch("http://localhost:4000/api/auth/login", {
         method: "POST",
@@ -28,13 +32,14 @@ const Login = ({ setlogin}) => {
       });
       const data = await res.json();
       //  console.log(data);
-      setLoading(false);
-
-      setmsg(data.message);
-      setlogin(true);
+      if (data.success === false) {
+        dispatch(logInFail(data));
+        return;
+      }
+      dispatch(logInSuccess(data));
+      navigate("/profile");
     } catch (error) {
-      setLoading(false);
-      setIsError(true);
+      dispatch(logInFail(error));
 
       console.log(error.message);
     }
@@ -43,7 +48,6 @@ const Login = ({ setlogin}) => {
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl text-center font-semibold my-7">Login</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-       
         <input
           type="email"
           placeholder="Email"
@@ -73,8 +77,7 @@ const Login = ({ setlogin}) => {
         </Link>
       </div>
       <p className="text-red-700 mt-5">
-        {isError && `Something went wrong! `}
-        {msg}
+        {loginMsg ? loginMsg :  loginErr}
       </p>
     </div>
   );

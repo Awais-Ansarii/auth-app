@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-const Navbar = ({login, setlogin}) => {
-  
+import { useDispatch, useSelector } from "react-redux";
+
+const Navbar = () => {
+  const { isLogin } = useSelector((state) => state.user);
   return (
     <nav className="flex  h-12 bg-slate-100 font-semibold p-2 w-screen justify-around items-center">
       <div className="flex gap-6">
@@ -9,7 +11,7 @@ const Navbar = ({login, setlogin}) => {
         <Link to="/about">About</Link>
       </div>
 
-      {login ? (
+      {isLogin ? (
         <div className="flex gap-6">
           <Link to="/profile">Profile</Link>
           <Link to="/" >Logout</Link>
