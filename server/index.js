@@ -7,12 +7,15 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const PORT = process.env.PORT;
-
+const userRoutes= require('./routes/userRoutes')
+const authRoutes = require("./routes/authRoutes");
 const app = express()
 app.use(express.json())
 app.use(cookie_parser())
 app.use(cors())
 
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
 
 
 
