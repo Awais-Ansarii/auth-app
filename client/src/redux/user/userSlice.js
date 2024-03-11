@@ -49,6 +49,8 @@ const userSlice = createSlice({
       state.loading = false;
 
       state.loginErr = action.payload.message;
+      
+      
     },
   },
 });
