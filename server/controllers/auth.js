@@ -120,10 +120,12 @@ exports.login = async (req, res) => {
 };
 
 exports.google = async (req, res, next) => {
+
   try {
-    const user = await User.findOne({ email: req.body.email });
+    let user = await User.findOne({ email: req.body.email });
 
     if (user) {
+      console.log("inside if");
       const payload = {
         email: user.email,
         id: user._id,
@@ -147,11 +149,15 @@ exports.google = async (req, res, next) => {
         message: "google login successfully",
       });
     } else {
+      console.log('inside else')
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
-      const hashedPassword = bcrypt.hash(generatedPassword, 10);
-      const newUser = new User({
+      
+      console.log("generatedPassword ", generatedPassword);
+      const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+      let newUser = new User({
         name:
           req.body.name.split(" ").join("").toLowerCase() +
           Math.random().toString(36).slice(-8),
