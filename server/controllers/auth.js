@@ -93,7 +93,7 @@ exports.login = async (req, res) => {
 
       //creating a cookie
       let options = {
-        expires: new Date(Date.now() + 3600000),
+        expires: new Date(Date.now() + 360000),
         httpOnly: true,
       };
       //creating a cookie

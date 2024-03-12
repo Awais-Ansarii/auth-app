@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
-  const { isLogin } = useSelector((state) => state.user);
+  const { isLogin, currentUser } = useSelector((state) => state.user);
+  // const { name, profilePicture } = currentUser.registeredUser;
+  // console.log(currentUser.registeredUser);
   return (
     <nav className="flex  h-12 bg-slate-100 font-semibold p-2 w-screen justify-around items-center">
       <div className="flex gap-6">
@@ -13,8 +15,19 @@ const Navbar = () => {
 
       {isLogin ? (
         <div className="flex gap-6">
-          <Link to="/profile">Profile</Link>
-          <Link to="/" >Logout</Link>
+          <Link to="/profile">
+            {currentUser.registeredUser.profilePicture ? (
+              <img
+                src={currentUser.registeredUser.profilePicture}
+                alt={currentUser.registeredUser.name}
+                className="h-7 w-7 rounded-full object-cover"
+              />
+            ) : (
+              `Profile`
+            )}
+          </Link>
+
+          <Link to="/">Logout</Link>
         </div>
       ) : (
         <div className="flex gap-6">
@@ -24,6 +37,6 @@ const Navbar = () => {
       )}
     </nav>
   );
-}
+};
 
-export default Navbar
+export default Navbar;
