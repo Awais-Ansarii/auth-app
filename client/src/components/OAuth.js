@@ -24,7 +24,8 @@ const OAuth = () => {
         }),
       });
       const data = await res.json();
-      console.log(data);
+      console.log("google login  ", data);
+
       dispatch(logInSuccess(data));
       console.log(`logInSuccess`);
       navigate("/profile");

@@ -120,7 +120,6 @@ exports.login = async (req, res) => {
 };
 
 exports.google = async (req, res, next) => {
-
   try {
     let user = await User.findOne({ email: req.body.email });
 
@@ -149,18 +148,16 @@ exports.google = async (req, res, next) => {
         message: "google login successfully",
       });
     } else {
-      console.log('inside else')
+      console.log("inside else");
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
-      
+
       console.log("generatedPassword ", generatedPassword);
       const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
       let newUser = new User({
-        name:
-          req.body.name.split(" ").join("").toLowerCase() +
-          Math.random().toString(36).slice(-8),
+        name: req.body.name.split(" ").join("").toLowerCase(),
         email: req.body.email,
         password: hashedPassword,
         profilePicture: req.body.photo,
@@ -172,7 +169,7 @@ exports.google = async (req, res, next) => {
       newUser.token = token; // added our jwt token in that registered user object
 
       newUser.password = undefined;
-      
+
       //creating a cookie
       let options = {
         expires: new Date(Date.now() + 3600000),
@@ -192,5 +189,8 @@ exports.google = async (req, res, next) => {
 };
 
 exports.logout = (req, res) => {
-  res.clearCookie("access_token").status(200).json("Signout success!");
+  res.clearCookie("token").status(200).json({
+    sucess:true,
+    message: "logout success!"
+  });
 };
